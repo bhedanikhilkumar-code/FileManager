@@ -1,11 +1,12 @@
 <div align="center">
 
-# File Manager
+# FileManager — Smart Local File Manager\n
+### Smart local-first browser file manager for analysis, search, cleanup recommendations, and manifest export.
 
-### File management project focused on organizing, browsing, and handling files efficiently.
-
-![Status](https://img.shields.io/badge/Status-Portfolio%20Ready-0F172A?style=for-the-badge)
-![Docs](https://img.shields.io/badge/Docs-Pro%20README-2563EB?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Working%20Prototype-0F172A?style=for-the-badge)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=111827)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 ![GitHub repo](https://img.shields.io/badge/GitHub-filemanager-0F172A?style=for-the-badge&logo=github)
 ![Documentation](https://img.shields.io/badge/Documentation-Pro%20Level-7C3AED?style=for-the-badge)
 
@@ -15,34 +16,38 @@
 [![Repository Health](https://github.com/bhedanikhilkumar-code/FileManager/actions/workflows/repository-health.yml/badge.svg)](https://github.com/bhedanikhilkumar-code/FileManager/actions/workflows/repository-health.yml)
 <!-- REPO_HEALTH_BADGE_END -->
 
+<!-- APP_QUALITY_BADGE_START -->
+[![App Quality](https://github.com/bhedanikhilkumar-code/FileManager/actions/workflows/app-quality.yml/badge.svg)](https://github.com/bhedanikhilkumar-code/FileManager/actions/workflows/app-quality.yml)
+<!-- APP_QUALITY_BADGE_END -->
+
 </div>
 
 ---
 
 ## Executive Overview
 
-File management project focused on organizing, browsing, and handling files efficiently.
+FileManager is now a working **local-first browser utility**. It lets users select or drag files into the browser, inspect file metadata, search and sort files, understand storage usage, find duplicate/large-file cleanup opportunities, and export a portable JSON manifest.
 
-This README is written as a **portfolio-grade project document**: it explains the product idea, technical approach, architecture, workflows, setup process, engineering standards, and future roadmap so a reviewer can understand both the codebase and the thinking behind it.
+The project was upgraded from a docs-only repository into a real portfolio-ready app with vanilla JavaScript modules, responsive UI, Node.js unit tests, project validation, and GitHub Actions quality checks.
 
 ## Product Positioning
 
 | Question | Answer |
 | --- | --- |
 | **Who is it for?** | Users, reviewers, recruiters, and developers who want to understand the project quickly. |
-| **What problem does it solve?** | It turns a practical idea into a structured software project with clear workflows and maintainable implementation direction. |
+| **What problem does it solve?** | It helps users understand a folder/file selection quickly without uploading private files to a server. |
 | **Why it matters?** | The project demonstrates product thinking, stack selection, feature planning, and clean documentation discipline. |
-| **Current focus** | Professional polish, understandable architecture, and portfolio-ready presentation. |
+| **Current focus** | Working browser prototype, local metadata analysis, test coverage, and CI-backed repository quality. |
 
 ## Repository Snapshot
 
 | Area | Details |
 | --- | --- |
 | Visibility | Public portfolio repository |
-| Primary stack | `Project-specific` |
-| Repository topics | `file-manager`, `productivity`, `utility` |
-| Useful commands | Documented in setup section |
-| Key dependencies | No dependency manifest detected |
+| Primary stack | `HTML5`, `CSS3`, `Vanilla JavaScript`, `Node.js tests` |
+| Repository topics | `file-manager`, `productivity`, `utility`, `browser-app`, `vanilla-javascript` |
+| Useful commands | `npm start`, `npm test`, `npm run check` |
+| Key dependencies | Zero runtime dependencies; Node.js is used for local preview and tests |
 
 ## Topics
 
@@ -52,10 +57,11 @@ This README is written as a **portfolio-grade project document**: it explains th
 
 | Capability | Description |
 | --- | --- |
-| **Focused workspace** | Built around simple daily productivity flows instead of unnecessary complexity. |
-| **Organized content** | Clear models and screens for creating, browsing, searching, and managing notes/tasks. |
-| **Offline-friendly** | Useful even when connectivity is not the main dependency. |
-| **Polished interactions** | Prioritizes readable UI, fast navigation, and clean mobile ergonomics. |
+| **Local file analysis** | Uses browser file metadata to summarize selected files without uploading contents. |
+| **Search, filter, and sort** | Quickly narrows large selections by name, path, type, size, and modified state. |
+| **Cleanup recommendations** | Flags duplicate candidates, large files, unknown file types, and dominant file groups. |
+| **Manifest export** | Exports a structured JSON inventory for audits, backups, and review workflows. |
+| **Tested core logic** | File classification, filtering, sorting, summarization, and manifest generation are covered by Node tests. |
 
 <!-- PROJECT_DOCS_HUB_START -->
 
@@ -120,10 +126,12 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    User[User] --> Interface[Project Interface]
-    Interface --> Core[Core Logic]
-    Core --> Data[(Project Data)]
-    Core --> Output[Useful Output]
+    User[User] --> Browser[Browser UI: index.html + app.js]
+    Browser --> Core[src/file-manager.js]
+    Core --> Metadata[Local File Metadata]
+    Core --> Insights[Stats, Filters, Recommendations]
+    Core --> Manifest[JSON Manifest Export]
+    Tests[Node Test Runner] --> Core
 ```
 
 ## Core Workflow
@@ -131,21 +139,36 @@ flowchart LR
 ```mermaid
 sequenceDiagram
     participant U as User
-    participant A as Application
-    participant L as Logic Layer
-    participant D as Data/Device Layer
-    U->>A: Start workflow
-    A->>L: Process request
-    L->>D: Save/update state
-    D-->>L: State/result
-    L-->>A: Return useful result
-    A-->>U: Updated experience
+    participant UI as Browser UI
+    participant Core as File Manager Logic
+    participant Export as Manifest Export
+    U->>UI: Select or drop local files
+    UI->>Core: Normalize metadata into file records
+    Core-->>UI: Summary, type groups, filtered/sorted list
+    UI->>Core: Request cleanup recommendations
+    Core-->>UI: Duplicate, large-file, and classification insights
+    U->>Export: Download JSON manifest
 ```
 
 ## How the Project is Organized
 
 ```text
 FileManager/
+├── index.html                         # Browser entry point
+├── package.json                       # Node scripts for preview, tests, and validation
+├── src/
+│   ├── app.js                         # DOM events, rendering, drag/drop, export flow
+│   ├── file-manager.js                # Pure file metadata logic and recommendations
+│   └── styles.css                     # Responsive dark UI styling
+├── tests/
+│   └── file-manager.test.mjs          # Node unit tests for core logic
+├── scripts/
+│   ├── serve.mjs                      # Dependency-free local static server
+│   └── validate-project.mjs           # Portfolio/project structure validation
+├── .github/workflows/
+│   ├── app-quality.yml                # Node test + validation CI
+│   └── repository-health.yml          # Documentation/community health CI
+└── docs/                              # Architecture, case study, roadmap, quality notes
 ```
 
 ## Engineering Notes
@@ -160,10 +183,18 @@ FileManager/
 
 ```bash
 # Clone the repository
-git clone <repo-url>
-cd <repo-name>
+git clone https://github.com/bhedanikhilkumar-code/FileManager.git
+cd FileManager
 
-# Follow the stack-specific setup notes in the source files.
+# Run the automated tests
+npm test
+
+# Validate repository/project structure
+npm run check
+
+# Start the local preview server
+npm start
+# Open http://localhost:4173
 ```
 
 ## Suggested Quality Checks
@@ -172,18 +203,19 @@ Before shipping or presenting this project, run the checks that match the stack:
 
 | Check | Purpose |
 | --- | --- |
-| Format/lint | Keep code style consistent and reviewer-friendly. |
-| Static analysis | Catch type, syntax, and framework-level issues early. |
-| Unit/widget tests | Validate important logic and user-facing workflows. |
-| Manual smoke test | Confirm the main flow works from start to finish. |
-| README review | Ensure documentation matches the actual repository state. |
+| `npm test` | Runs Node.js unit tests for file classification, filtering, sorting, summaries, and manifest export. |
+| `npm run check` | Validates the expected app, docs, workflow, and README structure. |
+| GitHub Actions `app-quality.yml` | Runs tests and validation on every push/PR. |
+| GitHub Actions `repository-health.yml` | Checks documentation, templates, and professional repo files. |
+| Manual smoke test | Select files, search/filter/sort, review recommendations, and export a manifest. |
 
 ## Roadmap
 
-- Advanced search filters
-- Export/import workflows
-- Template system for repeatable content
-- Notification and reminder polish
+- Add folder tree visualization from `webkitRelativePath` metadata
+- Add file-type storage charts and quick cleanup buckets
+- Add optional File System Access API integration for supported browsers
+- Add import flow for previously exported manifests
+- Add Playwright smoke tests for browser-level interactions
 
 ## Professional Review Checklist
 

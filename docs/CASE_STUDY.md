@@ -1,47 +1,51 @@
-# Case Study — File Manager
+# Case Study — FileManager
 
 ## One-Line Summary
 
-File management project focused on organizing, browsing, and handling files efficiently.
+FileManager is a local-first browser utility that helps users understand selected files quickly through metadata analysis, search, sorting, cleanup recommendations, and manifest export.
 
-## Product Story
+## Why This Repo Was Weak
 
-This project is presented as more than a code sample. It is documented as a practical product concept with a clear user workflow, technical structure, and future improvement path.
+Before this upgrade, the repository had strong documentation but no actual application code, tests, package manifest, or app-specific CI. That made it look polished on the surface but weak during deeper review.
 
-## Problem Framing
+## What Changed
 
-| Area | Notes |
+| Area | Upgrade |
 | --- | --- |
-| User need | A focused tool/workflow that solves a recognizable problem. |
-| Product goal | Make the core workflow understandable, usable, and extensible. |
-| Engineering goal | Keep the structure readable enough for future features and review. |
-| Portfolio goal | Demonstrate practical thinking, stack awareness, and presentation quality. |
+| Product | Added a working smart file manager browser prototype. |
+| Engineering | Added modular vanilla JavaScript core logic and DOM orchestration. |
+| Quality | Added Node unit tests and project validation. |
+| CI | Added App Quality workflow in addition to Repository Health. |
+| Documentation | Updated README, architecture, quality, and roadmap to match the real implementation. |
 
-## Key Decisions
+## Product Decisions
 
-- Documented the project with diagrams so reviewers can understand it quickly.
-- Separated the README overview from deeper architecture, roadmap, and case-study notes.
-- Added GitHub community templates to make the repository look maintained and collaboration-ready.
-- Kept future improvements scoped as realistic roadmap items instead of vague promises.
+- **Local-first by default:** The app uses browser file metadata and does not upload file contents.
+- **Zero runtime dependencies:** Keeps the prototype easy to run, review, and maintain.
+- **Pure logic module:** Core behavior lives in `src/file-manager.js`, making it easy to test without a browser.
+- **Portfolio-friendly UI:** The UI is intentionally polished enough for a quick reviewer demo.
+- **Manifest export:** Turns a simple file list into a useful audit/backups artifact.
 
-## Review Narrative
+## Main User Journey
 
-A reviewer should leave with three impressions:
+1. User opens the app locally.
+2. User selects or drags files into the browser.
+3. App normalizes metadata into records.
+4. User reviews total size, largest file, type counts, and recommendations.
+5. User searches, filters, and sorts the workspace.
+6. User exports a JSON manifest for review or backup planning.
 
-1. **The idea is clear** — the repository explains who it is for and why it exists.
-2. **The engineering is intentional** — architecture and workflow are documented.
-3. **The project is maintainable** — contribution, security, and roadmap notes are in place.
+## Portfolio Value
 
-## Impact / Portfolio Value
+This upgrade makes the repository stronger because it now demonstrates:
 
-| Signal | Why it helps GitHub look professional |
-| --- | --- |
-| Strong README | Improves first impression and project clarity. |
-| Architecture docs | Shows system-design thinking. |
-| Case study | Turns a repo into a product story. |
-| Roadmap | Shows direction and ownership. |
-| Issue/PR templates | Makes the repository feel maintained and collaboration-ready. |
+- Practical product thinking.
+- Real, runnable frontend implementation.
+- Testable JavaScript architecture.
+- CI-backed quality discipline.
+- Privacy-aware design choices.
+- Documentation that matches the actual codebase.
 
-## Next Case Study Upgrade
+## Next Strong Upgrade
 
-Add real screenshots, demo links, performance notes, or before/after examples once the project has visual assets or deployed links.
+The most valuable next improvement would be a GitHub Pages demo with screenshots and Playwright smoke tests. That would make the project instantly reviewable without requiring local setup.

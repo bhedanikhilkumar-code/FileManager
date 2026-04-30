@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Smart browser-based file manager prototype for local file analysis, cleanup recommendations, and manifest export."
+    />
+    <title>FileManager — Smart Local File Organizer</title>
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Portfolio-grade productivity utility</p>
+          <h1 id="page-title">Smart Local File Manager</h1>
+          <p class="hero-copy">
+            Analyze selected files in the browser, understand storage usage, find cleanup opportunities,
+            search quickly, and export a clean JSON manifest — without uploading files anywhere.
+          </p>
+          <div class="hero-actions" aria-label="Primary actions">
+            <label class="button primary" for="file-picker">Choose files</label>
+            <input id="file-picker" type="file" multiple hidden />
+            <button class="button secondary" id="load-sample" type="button">Load sample workspace</button>
+            <button class="button ghost" id="export-manifest" type="button" disabled>Export manifest</button>
+          </div>
+        </div>
+        <aside class="privacy-card" aria-label="Privacy note">
+          <span class="privacy-icon">🔒</span>
+          <strong>Local-first preview</strong>
+          <p>Files are read as browser metadata only. The app does not upload file contents.</p>
+        </aside>
+      </section>
+
+      <section class="drop-zone" id="drop-zone" aria-label="Drop files here">
+        <div>
+          <strong>Drag & drop files here</strong>
+          <span>or use the choose button above. Folder paths are grouped when the browser provides them.</span>
+        </div>
+      </section>
+
+      <section class="stats-grid" aria-label="Workspace summary">
+        <article class="stat-card">
+          <span>Total files</span>
+          <strong id="stat-files">0</strong>
+        </article>
+        <article class="stat-card">
+          <span>Total size</span>
+          <strong id="stat-size">0 B</strong>
+        </article>
+        <article class="stat-card">
+          <span>Largest file</span>
+          <strong id="stat-largest">—</strong>
+        </article>
+        <article class="stat-card">
+          <span>File types</span>
+          <strong id="stat-types">0</strong>
+        </article>
+      </section>
+
+      <section class="workspace-grid">
+        <aside class="panel" aria-labelledby="filters-title">
+          <h2 id="filters-title">Filters</h2>
+          <label class="field">
+            <span>Search</span>
+            <input id="search" type="search" placeholder="name, folder, extension..." />
+          </label>
+          <label class="field">
+            <span>Type</span>
+            <select id="type-filter">
+              <option value="all">All types</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Sort by</span>
+            <select id="sort-by">
+              <option value="name">Name</option>
+              <option value="size">Size</option>
+              <option value="type">Type</option>
+              <option value="modified">Modified</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Direction</span>
+            <select id="sort-direction">
+              <option value="asc">Ascending</option>
+              <option value="desc">Descending</option>
+            </select>
+          </label>
+          <button class="button secondary full" id="clear-files" type="button" disabled>Clear workspace</button>
+        </aside>
+
+        <section class="panel" aria-labelledby="recommendations-title">
+          <h2 id="recommendations-title">Cleanup recommendations</h2>
+          <ul class="recommendations" id="recommendations">
+            <li>Select files to receive storage and organization insights.</li>
+          </ul>
+        </section>
+
+        <section class="panel file-panel" aria-labelledby="files-title">
+          <div class="panel-header">
+            <div>
+              <h2 id="files-title">Files</h2>
+              <p id="result-count">No files selected yet.</p>
+            </div>
+          </div>
+          <div class="file-list" id="file-list" role="list"></div>
+        </section>
+      </section>
+    </main>
+
+    <template id="file-row-template">
+      <article class="file-row" role="listitem">
+        <div class="file-icon" aria-hidden="true"></div>
+        <div class="file-main">
+          <strong class="file-name"></strong>
+          <span class="file-path"></span>
+        </div>
+        <div class="file-meta">
+          <span class="file-type"></span>
+          <span class="file-size"></span>
+        </div>
+      </article>
+    </template>
+
+    <script type="module" src="src/app.js"></script>
+  </body>
+</html>

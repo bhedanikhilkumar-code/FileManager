@@ -1,0 +1,23 @@
+{
+  "name": "filemanager",
+  "version": "1.0.0",
+  "description": "A browser-based smart file manager prototype with local file analysis, search, sorting, cleanup recommendations, and manifest export.",
+  "type": "module",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "check": "node scripts/validate-project.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "keywords": [
+    "file-manager",
+    "productivity",
+    "browser-app",
+    "vanilla-javascript",
+    "portfolio"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}

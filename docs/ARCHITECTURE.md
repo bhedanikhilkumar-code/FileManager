@@ -1,80 +1,107 @@
-# Architecture — File Manager
+# Architecture — FileManager
 
 ## Purpose
 
-File management project focused on organizing, browsing, and handling files efficiently.
-
-This document explains the project from an engineering-review perspective: layers, workflow, data/state movement, and extension points.
+FileManager is a local-first browser prototype for analyzing selected files without uploading file contents. It turns browser file metadata into searchable records, storage summaries, cleanup recommendations, and an exportable JSON manifest.
 
 ## System Context
 
 ```mermaid
 flowchart LR
-    User[User / Reviewer] --> Interface[Project Interface]
-    Interface --> Logic[Application Logic]
-    Logic --> Data[Data / Device / File Layer]
-    Logic --> Output[UI, Report, Generated Asset, or Action]
-    Output --> User
+    User[User] --> Browser[Browser UI]
+    Browser --> Picker[File Input / Drag Drop]
+    Picker --> Records[Normalized File Records]
+    Records --> Logic[src/file-manager.js]
+    Logic --> Insights[Stats, Filters, Recommendations]
+    Logic --> Export[JSON Manifest]
+    Tests[Node Unit Tests] --> Logic
 ```
+
+## Runtime Boundaries
+
+| Boundary | Responsibility | Notes |
+| --- | --- | --- |
+| Browser UI | Presents upload/drop zone, filters, stats, recommendations, and file list | Implemented in `index.html`, `src/app.js`, and `src/styles.css` |
+| File metadata | Uses `File` object metadata from the browser | File contents are not uploaded or persisted |
+| Core logic | Pure functions for classification, formatting, filtering, sorting, and recommendations | Implemented in `src/file-manager.js` and covered by tests |
+| Export | Creates a portable JSON manifest from selected metadata | Runs entirely in the browser |
+| Quality layer | Unit tests and project validation | `npm test`, `npm run check`, and GitHub Actions |
 
 ## Primary Workflow
 
 ```mermaid
-flowchart TD
-    A[Create content/task] --> B[Organize and search]
-    B --> C[Review progress/state]
-    C --> D[Export or improve workflow]
-    D --> E[Document, test, and improve]
-```
-
-## Layered Design
-
-| Layer | Responsibility | Review Focus |
-| --- | --- | --- |
-| Interface | Screens, pages, commands, forms, or hardware entry points | Is the user flow clear and easy to demo? |
-| State / Logic | Validation, calculations, orchestration, and workflow rules | Is behavior predictable and maintainable? |
-| Data / Services | Local storage, API calls, generated files, device APIs, or models | Is data handled safely and consistently? |
-| Presentation | README, diagrams, screenshots, and demo notes | Can someone understand the project quickly? |
-| Quality | Tests, linting, review checklist, and roadmap | Can the project grow without becoming messy? |
-
-## Technology Profile
-
-| Category | Value |
-| --- | --- |
-| Primary stack | Project-specific |
-| Repository type | Public portfolio |
-| GitHub topics | file-manager, productivity, utility |
-
-## Data / State Flow
-
-```mermaid
 sequenceDiagram
     participant U as User
-    participant I as Interface
-    participant L as Logic
-    participant D as Data/Device Layer
-    U->>I: Start main workflow
-    I->>L: Send validated intent
-    L->>D: Read/write required state
-    D-->>L: Return result
-    L-->>I: Prepare display/output
-    I-->>U: Show final state
+    participant UI as Browser UI
+    participant Core as File Manager Logic
+    participant Export as Manifest Export
+    U->>UI: Select or drag files
+    UI->>Core: Create normalized records
+    Core-->>UI: Summary and classified file list
+    U->>UI: Search, filter, and sort
+    UI->>Core: Request filtered/sorted view
+    Core-->>UI: Updated file list
+    UI->>Core: Request recommendations
+    Core-->>UI: Duplicate, large-file, and type insights
+    U->>Export: Download JSON manifest
 ```
 
-## Extension Points
+## Core Modules
 
-- Add screenshots or demo GIFs for the most important workflow.
-- Add automated checks that match the stack.
-- Add environment documentation if external services are used.
-- Add test fixtures or sample data for repeatable demos.
-- Convert roadmap items into small, reviewable issues.
+| Module | Role |
+| --- | --- |
+| `index.html` | Semantic app shell and accessible controls |
+| `src/app.js` | DOM orchestration, event handling, rendering, sample workspace, manifest download |
+| `src/file-manager.js` | Pure file metadata functions: classify, format, filter, sort, summarize, recommend, export |
+| `src/styles.css` | Dark responsive portfolio UI |
+| `tests/file-manager.test.mjs` | Node tests for core behavior |
+| `scripts/serve.mjs` | Dependency-free local preview server |
+| `scripts/validate-project.mjs` | Project structure and README validation |
 
-## Engineering Review Notes
+## Data Model
 
-A strong reviewer should be able to answer:
+```mermaid
+classDiagram
+    class FileRecord {
+      string id
+      string name
+      string path
+      string extension
+      number size
+      string formattedSize
+      string type
+      string icon
+      string? modifiedAt
+    }
 
-1. What problem does this project solve?
-2. What is the main user workflow?
-3. Which files/layers own the core behavior?
-4. What tradeoffs are documented?
-5. What would be the next professional improvement?
+    class Manifest {
+      string generatedAt
+      Summary summary
+      FileRecord[] files
+    }
+
+    class Summary {
+      number totalFiles
+      number totalBytes
+      string formattedTotalSize
+      object byType
+      FileRecord? largestFile
+      number typeCount
+    }
+
+    Manifest --> Summary
+    Manifest --> FileRecord
+```
+
+## Quality Gates
+
+- `npm test` validates core logic with Node's built-in test runner.
+- `npm run check` validates expected app, docs, and workflow files.
+- `.github/workflows/app-quality.yml` runs tests and validation on push/PR.
+- `.github/workflows/repository-health.yml` validates professional repository files.
+
+## Security and Privacy Notes
+
+- The prototype uses browser-provided metadata and does not upload files.
+- Manifest export contains file names, sizes, paths, types, and modified timestamps; users should review before sharing.
+- Future File System Access API integration should remain explicit, permission-based, and documented.
