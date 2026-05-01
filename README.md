@@ -30,6 +30,30 @@ FileManager is now a working **local-first browser utility**. It lets users sele
 
 The project was upgraded from a docs-only repository into a real portfolio-ready app with vanilla JavaScript modules, responsive UI, Node.js unit tests, project validation, and GitHub Actions quality checks.
 
+
+## Recruiter Quick Scan
+
+| What to look for | Why it matters |
+| --- | --- |
+| **Local-first browser app** | No server needed - shows vanilla JS skills |
+| **File analysis** | Metadata, size, duplicate detection |
+| **Zero dependencies** | Clean, lightweight codebase |
+| **Responsive UI** | Modern CSS with dark theme |
+| **CI quality checks** | GitHub Actions workflow |
+
+### Key Features
+
+| Feature | Description |
+| --- | --- |
+| Drag & drop | Select files in browser |
+| File metadata | Size, type, date info |
+| Search | Find files by name |
+| Cleanup recommendations | Large files, duplicates |
+| Manifest export | JSON export |
+
+---
+
+
 ## Product Positioning
 
 | Question | Answer |
@@ -219,7 +243,7 @@ Before shipping or presenting this project, run the checks that match the stack:
 
 ## Professional Review Checklist
 
-- [ ] Clear project purpose and audience
+- [x] Clear project purpose and audience
 - [ ] Feature list aligned with real user workflows
 - [ ] Architecture documented with diagrams
 - [ ] Setup steps tested on a clean machine
@@ -228,9 +252,13 @@ Before shipping or presenting this project, run the checks that match the stack:
 - [ ] Tests/lint commands documented
 - [ ] Roadmap shows practical next steps
 
-## Screenshots / Demo Suggestions
+## Screenshots / Demo Notes
 
-Add these assets when available to make the repository even stronger:
+| Asset | Status |
+| --- | --- |
+| Working prototype | Live at local index.html |
+| CLI tests | npm test |
+| Workflow GIF | Future improvement | when available to make the repository even stronger:
 
 | Asset | Recommended content |
 | --- | --- |
